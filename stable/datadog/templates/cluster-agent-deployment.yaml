@@ -74,6 +74,8 @@ spec:
           protocol: TCP
         {{- end }}
         env:
+          - name: DD_HEALTH_PORT
+            value: {{ .Values.clusterAgent.healthPort | default 8080 | quote }}
           - name: DD_API_KEY
             valueFrom:
               secretKeyRef:
@@ -140,9 +142,15 @@ spec:
 {{- if .Values.clusterAgent.env }}
 {{ toYaml .Values.clusterAgent.env | indent 10 }}
 {{- end }}
+{{- if .Values.clusterAgent.livenessProbe }}
         livenessProbe:
 {{ toYaml .Values.clusterAgent.livenessProbe | indent 10 }}
+<<<<<<< HEAD
 {{- else if .Values.clusterAgent.metricsProvider.enabled}}
+=======
+{{- end }}
+{{- if .Values.clusterAgent.readinessProbe }}
+>>>>>>> [stable/datadog] cleanup refactor RBAC resources
         readinessProbe:
 {{ toYaml .Values.clusterAgent.readinessProbe | indent 10 }}
 {{- end }}
@@ -172,9 +180,13 @@ spec:
       affinity:
 {{ toYaml .Values.clusterAgent.affinity | indent 8 }}
       {{- end }}
+<<<<<<< HEAD
       serviceAccountName: {{ if .Values.rbac.create }}{{ template "datadog.fullname" . }}-cluster-agent{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
       {{- if .Values.clusterAgent.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.clusterAgent.nodeSelector | indent 8 }}
       {{- end }}
+=======
+      serviceAccountName: {{ if .Values.clusterAgent.rbac.create }}{{ template "datadog.fullname" . }}-cluster-agent{{ else }}"{{ .Values.clusterAgent.rbac.serviceAccountName }}"{{ end }}
+>>>>>>> [stable/datadog] cleanup refactor RBAC resources
 {{ end }}
