@@ -140,6 +140,12 @@ spec:
           name: debugfs
         - name: sysprobe-socket-dir
           emptyDir: {}
+        - hostPath:
+            path: /lib/modules
+          name: modules
+        - hostPath:
+            path: /usr/src
+          name: src
         {{- end }}
         {{- if .Values.agents.useConfigMap }}
         - name: {{ template "datadog.fullname" . }}-datadog-yaml

@@ -145,6 +145,11 @@
       readOnly: true
     {{- end }}
     {{- end }}
+    {{- if .Values.datadog.systemProbe.enabled }}
+    - name: sysprobe-socket-dir
+      mountPath: /opt/datadog-agent/run
+      readOnly: true
+    {{- end }}
 {{- if .Values.agents.volumeMounts }}
 {{ toYaml .Values.agents.volumeMounts | indent 4 }}
 {{- end }}
