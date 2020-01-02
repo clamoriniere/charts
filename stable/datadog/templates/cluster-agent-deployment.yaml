@@ -58,6 +58,8 @@ spec:
       hostNetwork: {{ .Values.clusterAgent.useHostNetwork }}
       dnsPolicy: ClusterFirstWithHostNet
       {{- end }}
+      imagePullSecrets:
+{{ toYaml .Values.clusterAgent.image.pullSecrets | indent 8 }}
       containers:
       - name: cluster-agent
         image: "{{ .Values.clusterAgent.image.repository }}:{{ .Values.clusterAgent.image.tag }}"
@@ -90,9 +92,9 @@ spec:
                 name: {{ template "datadog.appKeySecretName" . }}
                 key: app-key
           {{- end }}
-          {{- if .Values.clusterAgent.clusterChecks.enabled }}
+          {{- if .Values.datadog.clusterChecks.enabled }}
           - name: DD_CLUSTER_CHECKS_ENABLED
-            value: {{ .Values.clusterAgent.clusterChecks.enabled | quote }}
+            value: {{ .Values.datadog.clusterChecks.enabled | quote }}
           - name: DD_EXTRA_CONFIG_PROVIDERS
             value: "kube_services"
           - name: DD_EXTRA_LISTENERS
@@ -122,7 +124,7 @@ spec:
           {{- if .Values.datadog.leaderLeaseDuration }}
           - name: DD_LEADER_LEASE_DURATION
             value: {{ .Values.datadog.leaderLeaseDuration | quote }}
-          {{- else if .Values.clusterAgent.clusterChecks.enabled }}
+          {{- else if .Values.datadog.clusterChecks.enabled }}
           - name: DD_LEADER_LEASE_DURATION
             value: "15"
           {{- end }}
