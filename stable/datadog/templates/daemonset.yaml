@@ -127,7 +127,7 @@ spec:
         - name: sysprobe-config
           configMap:
             name: {{ template "datadog.fullname" . }}-system-probe-config
-        {{- if eq .Values.systemProbe.seccomp "localhost/system-probe" }}
+        {{- if eq .Values.datadog.systemProbe.seccomp "localhost/system-probe" }}
         - name: datadog-agent-security
           configMap:
             name: {{ template "datadog.fullname" . }}-security
